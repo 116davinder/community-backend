@@ -1,4 +1,6 @@
 from flask import Flask,jsonify
+from flask.wrappers import Request
+import json
 
 app = Flask(__name__)
 
@@ -11,10 +13,7 @@ posts = [
 @app.route("/post", methods = ['GET'])
 def get_post(id=None):
     if id == None:
-        if len(posts) < 10:
-            return jsonify({ "posts" : posts[:]})
-        else:
-            return jsonify({ "posts" : posts[:10]})
+        return jsonify({ "posts" : posts[:]})
     else:
         for post in posts:
             if post['id'] == int(id):
@@ -28,5 +27,16 @@ def get_post(id=None):
                 break
 
         return jsonify({ "posts": []})
+
+@app.route("/post", methods = ['POST'])
+def create_post(request):
+    try:
+        data = json.loads(request.args.get_data(as_text=True))
+    except ValueError:
+        return jsonify({"Error": "Error Decoding JSON"}), 400
+    except TypeError as e:
+        print(e)
+        return jsonify({"Error": "Malformed JSON"}), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
