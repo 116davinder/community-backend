@@ -1,6 +1,8 @@
-from flask import Flask,jsonify
-from flask.wrappers import Request
+from logging import error
+from flask import Flask,jsonify,request
 import json
+import logging
+from backend import common
 
 app = Flask(__name__)
 
@@ -29,14 +31,20 @@ def get_post(id=None):
         return jsonify({ "posts": []})
 
 @app.route("/post", methods = ['POST'])
-def create_post(request):
+def create_post():
+    _data = request.get_data(cache=False, as_text=True)
     try:
-        data = json.loads(request.args.get_data(as_text=True))
-    except ValueError:
-        return jsonify({"Error": "Error Decoding JSON"}), 400
-    except TypeError as e:
-        print(e)
-        return jsonify({"Error": "Malformed JSON"}), 400
+        _data = json.loads(_data)
+    except json.decoder.JSONDecodeError as e:
+        logging.error(e)
+        return jsonify({"error": str(e)}), 400
+
+    _c,_e = common.validate_post(_data)
+    if _c:
+        return str(common.create_post(_data)), 200
+    else:
+        return jsonify({"error": _e}), 400
 
 if __name__ == '__main__':
+    common.setLoggingFormat(logging.DEBUG)
     app.run(debug=True)
