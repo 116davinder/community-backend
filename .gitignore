@@ -1,4 +1,4 @@
 .vscode
 __*
 venv
-*/__*
+*/*pycache*
