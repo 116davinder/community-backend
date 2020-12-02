@@ -1,0 +1,46 @@
+{
+    "posts": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "1"
+                    },
+                    "title": {
+                        "S": "Abohar Clean?"
+                    },
+                    "description": {
+                        "S": "Hola Clean"
+                    },
+                    "start_year": {
+                        "N": "2015"
+                    },
+                    "likes": {
+                        "N": "0"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {
+                        "S": "2"
+                    },
+                    "title": {
+                        "S": "Abohar Clean 2?"
+                    },
+                    "description": {
+                        "S": "Hola Clean 2"
+                    },
+                    "start_year": {
+                        "N": "2015"
+                    },
+                    "likes": {
+                        "N": "1"
+                    }
+                }
+            }
+        }
+    ]
+}
